@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Forecast: Decodable {
+public struct Forecast: Codable {
     public enum CodingKeys: String, CodingKey {
         case updated, generatedAt, validTimes, elevation, periods
     }
@@ -38,5 +38,14 @@ public struct Forecast: Decodable {
         self.elevation = Measurement(value: elevationValue, unit: .meters)      // NWS returns elevation in meters regardless of parent unit
 
         self.periods = try container.decode([Period].self, forKey: .periods)
+    }
+
+     public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(updated, forKey: .updated)
+        try container.encode(generatedAt, forKey: .generatedAt)
+        try container.encode(validTimes, forKey: .validTimes)
+        try container.encode(elevation, forKey: .elevation)
+        try container.encode(periods, forKey: .periods)
     }
 }
