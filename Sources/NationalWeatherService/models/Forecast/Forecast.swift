@@ -9,13 +9,13 @@ import Foundation
 
 public struct Forecast: Codable {
     public enum CodingKeys: String, CodingKey {
-        case updated, generatedAt, validTimes, elevation, periods
+        case updated, generatedAt, validTimes, elevation, periods, validTimesValue
     }
 
     public let updated: Date
     public let generatedAt: Date
 
-    // TODO: Handle valid times interval
+    public let validTimesValue : String
     public let validTimes: DateInterval
     public let elevation: Measurement<UnitLength>
     public let periods: [Period]
@@ -26,8 +26,8 @@ public struct Forecast: Codable {
         self.updated = try container.decode(Date.self, forKey: .updated)
         self.generatedAt = try container.decode(Date.self, forKey: .generatedAt)
 
-        let validTimesValue = try container.decode(String.self, forKey: .validTimes)
-        guard let validTimes = DateInterval.iso8601Interval(from: validTimesValue) else {
+        self.validTimesValue = try container.decode(String.self, forKey: .validTimes)
+        guard let validTimes = DateInterval.iso8601Interval(from: self.validTimesValue) else {
             throw DecodingError.dataCorruptedError(forKey: .validTimes, in: container, debugDescription: "Invalid date interval.")
         }
         self.validTimes = validTimes
@@ -44,7 +44,7 @@ public struct Forecast: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(updated, forKey: .updated)
         try container.encode(generatedAt, forKey: .generatedAt)
-        try container.encode(validTimes, forKey: .validTimes)
+        try container.encode(validTimesValue, forKey: .validTimes)
         try container.encode(elevation, forKey: .elevation)
         try container.encode(periods, forKey: .periods)
     }

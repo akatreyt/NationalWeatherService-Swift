@@ -73,11 +73,11 @@ extension Forecast {
             try container.encode(endTime, forKey: .endTime)
             
             try container.encode(isDaytime, forKey: .isDaytime)
-            try container.encode(temperatureValue, forKey: .temperatureValue)
+            try container.encode(temperatureValue, forKey: .temperature)
             
-            try container.encode(temperatureUnitRaw, forKey: .temperatureUnitRaw)
+            try container.encode(temperatureUnitRaw, forKey: .temperatureUnit)
 
-            try container.encode(windSpeedValue, forKey: .windSpeedValue)
+            try container.encode(windSpeedValue, forKey: .windSpeed)
             try container.encode(windDirection, forKey: .windDirection)
 
             try container.encode(icon, forKey: .icon)
